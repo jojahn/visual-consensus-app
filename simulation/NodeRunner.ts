@@ -1,6 +1,6 @@
 import { Network } from "./Network";
 import { randomId } from "../utils/randomId.mjs";
-import { SimulatedNode } from./SimulatedNode.jsjs";
+import { SimulatedNode } from "./SimulatedNode";
 import { setupNode } from "../algorithms/setupNode.mjs";
 
 export class NodeRunner {

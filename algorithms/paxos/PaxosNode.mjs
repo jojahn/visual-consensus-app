@@ -1,4 +1,4 @@
-import { SimulatedNode } from "../../simulation/SimulatedNode.ts/index.js";
+import { SimulatedNode } from "../../simulation/SimulatedNode";
 import { Acceptor } from "./Acceptor.mjs";
 import { Learner } from "./Learner.mjs";
 import { Proposer } from "./Proposer.mjs";

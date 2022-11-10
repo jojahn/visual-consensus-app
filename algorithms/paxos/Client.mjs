@@ -1,4 +1,4 @@
-import { SimulatedNode } from "../../simulation/SimulatedNode.ts/index.js";
+import { SimulatedNode } from "../../simulation/SimulatedNode";
 
 export class Client extends SimulatedNode {
   constructor(id, config, state, network) {
