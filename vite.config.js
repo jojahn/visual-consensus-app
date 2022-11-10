@@ -13,6 +13,7 @@ export default defineConfig({
         format: "es"
     },
     build: {
+        outDir: "docs",
         rollupOptions: {
             input: {
                 index: "index.html",
