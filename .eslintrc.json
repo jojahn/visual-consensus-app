@@ -1,0 +1,44 @@
+{
+  
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+	    "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "import",
+      "@typescript-eslint",
+	    "svelte3"
+    ],
+    "rules": {
+      "quotes": ["error", "double"],
+      "prefer-default-export": "off",
+      "indent": ["error", 2],
+      "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }],
+      "linebreak-style": "off",
+      "object-curly-spacing": ["error", "always"],
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": ["error"],
+      "@typescript-eslint/no-explicit-any": "off"
+    },
+    "overrides": [{
+	    "files": ["**/*.svelte"],
+	    "processor": "svelte3/svelte3"
+    }],
+    "ignorePatterns": [
+      "dist/**",
+  	  "node_modules/**",
+  	  "public/**",
+  	  "*.config.js",
+  	  "*.test.?js",
+  	  "*.test.ts"
+    ]
+}

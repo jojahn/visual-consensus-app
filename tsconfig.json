@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "es2022",
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "types": [
+      "jest",
+      "vite/client"
+    ],
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
