@@ -53,16 +53,16 @@ export interface Algorithm {
 ### 0. Implement algorithm
 
 *Check out Documentation from:*
- * HTML,CSS,JavaScript
- * TypeScript
- * Svelte
- * Jest
+ * HTML,CSS,JavaScript: [https://developer.mozilla.org](https://developer.mozilla.org)
+ * TypeScript: [TypeScript docs](https://www.typescriptlang.org/docs/)
+ * Svelte: [Svelte docs](https://svelte.dev/doc), [Svelte interactive tutorial](https://svelte.dev/tutorial/basics)
+ * Jest: [Jest docs](https://jestjs.io/docs/getting-started)
 
 Interfaces for Theming, Colors, Localization and Custom Rendering are planned for a future release.
 
 An actual node must be implemented as a class and inherit from `SimulatedNode`. 
 Communication between nodes is async and runs over the `onmessage` callback. 
-Inside each call of `onmessage` `invoke` must be called to allow step-by-step controls. 
+Inside each call of `onmessage`, `invoke` must be called to allow step-by-step controls. 
 
 ```ts
 interface Command {
@@ -78,11 +78,11 @@ abstract class SimulatedNode {
 
 ```ts
 class Node extends SimulatedNode {  
-  onmessage(msg) {
+  onmessage<T extends Message>(msg: T) {
     this.invoke(handler(msg));
   }
 
-  handler(msg) {
+  handler(msg): Command {
     return {
       do: () => {
         /* ... */

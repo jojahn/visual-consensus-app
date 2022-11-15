@@ -40,7 +40,7 @@ and [dolphin-app-9eiyn.ondigitalocean.app](https://dolphin-app-9eiyn.ondigitaloc
 ## Self-hosted
 
 1. Download release from [https://github.com/jojahn/visual-consensus-app/releases](https://github.com/jojahn/visual-consensus-app/releases)
-2. Unzip downloaded file
+2. Unzip downloaded folder
 3. Serve assets (e.g. python http server)
     ```bash
     python -m http.server
@@ -61,12 +61,7 @@ and [dolphin-app-9eiyn.ondigitalocean.app](https://dolphin-app-9eiyn.ondigitaloc
     npm run start
     ```
 * Visit [http://localhost:3000](http://localhost:3000)
-* Develop  
-    *[Interface Documentation](DOCS.md#Interfaces)*  
-    *[How to add new algorithms!](DOCS.md#Adding%20a%20new%20algorithm)*  
-    *[Svelte docs](https://svelte.dev/doc)*  
-    *[Svelte interactive tutorial](https://svelte.dev/tutorial/basics)*  
-    *[TypeScript docs](https://www.typescriptlang.org/docs/)*  
+* Develop (*[How to add new algorithms!](DOCS.md#Adding%20a%20new%20algorithm)*)
 
 ### Build
 
@@ -86,4 +81,4 @@ and [dolphin-app-9eiyn.ondigitalocean.app](https://dolphin-app-9eiyn.ondigitaloc
 npm run test
 ```
 
-*Tests are written with Jest ([https://jestjs.io/docs/getting-started](https://jestjs.io/docs/getting-started))*
+*Tests are written with Jest*
