@@ -42,8 +42,12 @@
         <p>{labels.info.byMessageMethod[element.method]}</p>
         <ul class="property-list">
             <li>method: <span>{element.method}</span></li>
-            <li>value: <input type="text" bind:value="{element.v}"></li>
-            <li>generation: <input type="text" bind:value="{element.n}"></li>
+            {#if ["REQUEST", "ACCEPTED", "ACCEPT"].indexOf(element.method) !== -1}
+                <li>value: <input type="text" bind:value="{element.v}"></li>
+            {/if}
+            {#if ["ACCEPT", "ACCEPTED", "PROMISE", "PREPARE", "IGNORED"].indexOf(element.method) !== -1}
+                <li>generation: <input type="text" bind:value="{element.n}"></li>
+            {/if}
         </ul>
         <button on:click={actions.delete}>delete</button>
         <button on:click={actions.modify}>modify</button>

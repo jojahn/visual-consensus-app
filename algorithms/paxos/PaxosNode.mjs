@@ -8,17 +8,18 @@ export class PaxosNode extends SimulatedNode {
     super(id, config, state, network);
     this.type = nodeType;
     this.state.log = [];
+    this.state.greatestN = 0;
         
     if (nodeType === "node" || nodeType === "acceptor") {
-      this.acceptor = new Acceptor(id, network);
+      this.acceptor = new Acceptor(id, network, config, this);
       this.state.acceptor = this.acceptor.state;
     }
     if (nodeType === "node" || nodeType === "learner") {
-      this.learner = new Learner(id, network);
+      this.learner = new Learner(id, network, config, this);
       this.state.learner = this.learner.state;
     }
     if (nodeType === "node" || nodeType === "proposer") {
-      this.proposer = new Proposer(id, network);
+      this.proposer = new Proposer(id, network, config, this);
       this.state.proposer = this.proposer.state;
     }
   }
