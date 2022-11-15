@@ -38,13 +38,14 @@ export function paintSequenceDiagram(context, state, mouseCursor, options = pain
   });
 
   const groupByTextOrBroadcastKey = (a, b) => {
-    if (options.getText(a) === options.getText(b)) {
+    /* const textEquals = options.getText(a) === options.getText(b);
+    if (textEquals) {
       return true;
     }
     if (a.broadcastKey !== undefined && b.broadcastKey !== undefined) {
       return a.broadcastKey === b.broadcastKey;
-    }
-    return false;
+    } */
+    return options.getText(a) === options.getText(b);
   }
 
   context.save();
