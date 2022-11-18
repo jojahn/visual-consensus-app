@@ -60,6 +60,7 @@
         <ul class="property-list">
             <li>type: <span>{element.type}</span></li>
             <li>state: <span>{element.state}</span></li>
+            {#if element.type !== "client"}<li>generation: <span>{element.greatestN || 0}</span></li>{/if}
         </ul>
 
         {#if element.type === "client"}

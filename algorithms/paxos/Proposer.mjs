@@ -8,19 +8,17 @@ export class Proposer {
     this.state = {
       proposals: [],
       text: "IDLE",
-      n: 1
     };
   }
 
-  hasMajority(n, promise = true) {
+  hasMajority(n, propertyName = "promises") {
     const proposal = this.state.proposals.find(p => p.n === n);
     if (!proposal) {
       return;
     }
     const numberOfAcceptors = this.network.getNeighborsOfType("acceptors").length
       || this.network.getNeighborsOfType("node").length;
-    // TODO: Use better quorum (majority)?
-    return (promise ? proposal.promises : proposal.acceptances).length > Math.ceil(0.5 * numberOfAcceptors);
+    return proposal[propertyName].length >= Math.floor(0.5 * numberOfAcceptors) + 1;
   }
 
   onRequest(msg) {
@@ -29,16 +27,24 @@ export class Proposer {
       do: () => {
         this.state.isProposer = true;
         this.state.text = "PREPARING";
-        this.state.proposals.push({ clientId: msg.fromId, v: msg.v, n: this.state.n, promises: [], acceptances: [] });
+        this.parentNode.state.greatestN += 1;
+        this.state.proposals.push({
+          clientId: msg.fromId,
+          v: msg.v,
+          n: this.parentNode.state.greatestN,
+          promises: [],
+          acceptances: [],
+          ignoredBy: []
+        });
         let acceptors = this.network.getNeighborsOfType("acceptor");
         if (!acceptors || acceptors.length === 0) {
           acceptors = this.network.getNeighborsOfType("node");
         }
-        this.parentNode.state.greatestN = this.state.n;
+        this.parentNode.state.log[this.parentNode.state.greatestN - 1] = msg.v;
         this.network.broadcast({
           clientId: msg.fromId,
           method: "PREPARE",
-          n: this.state.n
+          n: this.parentNode.state.greatestN
         }, acceptors.map(a => a.id));
       },
       undo: () => {
@@ -91,14 +97,13 @@ export class Proposer {
         if (!proposal) {
           return;
         }
-        if (this.hasMajority(msg.n, false)) {
+        if (this.hasMajority(msg.n, "acceptances")) {
           proposal.acceptances.push(msg.fromId);
           return;
         } else {
           proposal.acceptances.push(msg.fromId);
         }
-        if (this.hasMajority(msg.n, false)) { // && proposal.acceptances.length === proposal.promises.length
-          this.state.n = this.state.n + 1;
+        if (this.hasMajority(msg.n, "acceptances")) { // && proposal.acceptances.length === proposal.promises.length
           this.state.proposals.forEach(p => {
             // TODO: Inform learner/other acceptors here or in acceptor!
           });
@@ -107,29 +112,42 @@ export class Proposer {
         this.state.isProposer = false;
       },
       undo: () => {
-        this.state = lastState;
+        this.state = lastState.state;
+        this.parentNode.state = lastState.parentState;
       }
     }
   }
 
   onIgnored(msg) {
-    const lastState = { ...this.state };
+    let lastState = { state: {...this.state}, parentState: { ...this.parentNode.state } };
     return {
       do: () => {
-        const proposalIdx = this.state.proposals.findIndex(p => p.n === msg.n);
-        if (proposalIdx < 0 || !this.state.proposals[proposalIdx]) {
+        // the generation of message is not the current generation of the proposer
+        if (msg.n > this.parentNode.state.greatestN) {
+          this.parentNode.state.greatestN = msg.n;
+          this.state.isProposer = false;
+          return;
+        } else if (msg.n < this.parentNode.state.greatestN) {
           return;
         }
+        const proposalIdx = this.state.proposals.findIndex(p => p.n === msg.n);
+        if (proposalIdx < 0 || !this.state.proposals[proposalIdx]) {
+            return;
+        }
+
         this.state.proposals = this.state.proposals.map(p => p.n === msg.n
           ? {
             ...p,
             acceptances: p.acceptances.filter(p => p.acceptorId !== msg.fromId),
             promises: p.promises.filter(p => p.acceptorId !== msg.fromId)
           } : p);
-        this.state.n = msg.n + 1;
-        this.state.proposals[proposalIdx].n = this.state.n;
 
-        let acceptors = this.network.getNeighborsOfType("acceptor");
+        // this.state.n = msg.n + 1;
+        // this.state.proposals[proposalIdx].n = this.state.n;
+
+        // TODO: decide how to handle ignored messages
+        // Retry prepare with higher number
+        /* let acceptors = this.network.getNeighborsOfType("acceptor");
         if (!acceptors || acceptors.length === 0) {
           acceptors = this.network.getNeighborsOfType("node");
         }
@@ -140,7 +158,7 @@ export class Proposer {
             method: "PREPARE",
             n: this.state.n
           });
-        }
+        } */
       },
       undo: () => {
         this.state = lastState;

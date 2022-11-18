@@ -158,6 +158,7 @@ let currentPaintOptions = paintOptions;
 afterUpdate(() => {
     if (currentPaintOptions !== paintOptions) {
         createGraph();
+        changeZoomScale(0);
         currentPaintOptions = paintOptions;
     }
 });

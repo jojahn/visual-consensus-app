@@ -17,6 +17,7 @@ export const labels = {
     byNodeState: {
     },
     byMessageMethod: {
+      RESPONSE: "Clients may be informed about the outcome of the voting.",
       REQUEST: "Clients can send requests to the current leader if they want to store an input to the replicated log of the cluster.",
       PREPARE: "A leader node (or proposer) sends followers its generation n. It prepares to commit a value v.",
       PROMISE: "Followers (or acceptors) answer to the PREPARE requests with a PROMISE message",
