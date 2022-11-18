@@ -3,7 +3,8 @@ import * as pow from "./pow/";
 
 const algorithms = {
   [paxos.key]: paxos,
-  [pow.key]: pow
+  // TODO: Fix Proof of Work integration
+  // [pow.key]: pow
 };
 
 export default algorithms;

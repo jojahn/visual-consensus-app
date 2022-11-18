@@ -22,7 +22,7 @@ export class Proposer {
   }
 
   onRequest(msg) {
-    let lastState = { state: {...this.state}, parentState: { ...this.parentNode.state } };
+    let lastState = { state: { ...this.state }, parentState: { ...this.parentNode.state } };
     return {
       do: () => {
         this.state.isProposer = true;
@@ -103,10 +103,7 @@ export class Proposer {
         } else {
           proposal.acceptances.push(msg.fromId);
         }
-        if (this.hasMajority(msg.n, "acceptances")) { // && proposal.acceptances.length === proposal.promises.length
-          this.state.proposals.forEach(p => {
-            // TODO: Inform learner/other acceptors here or in acceptor!
-          });
+        if (this.hasMajority(msg.n, "acceptances")) {
           this.state.text = "IDLE";
         }
         this.state.isProposer = false;
@@ -119,7 +116,7 @@ export class Proposer {
   }
 
   onIgnored(msg) {
-    let lastState = { state: {...this.state}, parentState: { ...this.parentNode.state } };
+    let lastState = { state: { ...this.state }, parentState: { ...this.parentNode.state } };
     return {
       do: () => {
         // the generation of message is not the current generation of the proposer
@@ -132,7 +129,7 @@ export class Proposer {
         }
         const proposalIdx = this.state.proposals.findIndex(p => p.n === msg.n);
         if (proposalIdx < 0 || !this.state.proposals[proposalIdx]) {
-            return;
+          return;
         }
 
         this.state.proposals = this.state.proposals.map(p => p.n === msg.n

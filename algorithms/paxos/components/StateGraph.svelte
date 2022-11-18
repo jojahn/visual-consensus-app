@@ -1,7 +1,4 @@
 <script>
-    import {onMount} from "svelte";
-
-    export let configStore;
     export let stateStore;
 </script>
 

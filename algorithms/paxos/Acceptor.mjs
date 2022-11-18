@@ -11,7 +11,7 @@ export class Acceptor {
   }
 
   onPrepare(msg) {
-    let lastState = { state: {...this.state}, parentState: { ...this.parentNode.state } };
+    let lastState = { state: { ...this.state }, parentState: { ...this.parentNode.state } };
 
     return {
       do: () => {
@@ -40,7 +40,7 @@ export class Acceptor {
   }
 
   onAccept(msg) {
-    let lastState = { state: {...this.state}, parentState: { ...this.parentNode.state } };
+    let lastState = { state: { ...this.state }, parentState: { ...this.parentNode.state } };
 
     return {
       do: () => {

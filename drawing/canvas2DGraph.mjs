@@ -73,8 +73,6 @@ export function canvas2DGraph(
   };
 
   let center = [0, 0];
-  let lastWidth = canvas.width;
-  let lastHeight = canvas.height;
   let contentWidth = 0;
   let contentHeight = 0;
   let lastChanged = false;
@@ -83,7 +81,6 @@ export function canvas2DGraph(
   if (canvas.width !== canvas.parentElement.clientWidth) {
     canvas.width = canvas.parentElement.clientWidth;
     canvas.height = canvas.parentElement.clientHeight;
-    lastHeight = canvas.parentElement.clientHeight;
   }
   function animate() {
     switch(paintOptions.autoAlign) {

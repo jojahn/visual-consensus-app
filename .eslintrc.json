@@ -35,7 +35,8 @@
     }],
     "ignorePatterns": [
       "dist/**",
-  	  "node_modules/**",
+      "docs/**",
+      "node_modules/**",
   	  "public/**",
   	  "*.config.js",
   	  "*.test.?js",

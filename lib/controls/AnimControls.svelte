@@ -39,9 +39,9 @@
     <button on:click={controls.reset} type="button">
         reset
     </button>
-    <button on:click={controls.stepBackwards} type="button" disabled={!paused}>
+    <!-- <button on:click={controls.stepBackwards} type="button" disabled={!paused}>
         step backwards
-    </button>
+    </button> -->
     <button on:click={controls.pauseOrPlay} type="button">
         {#if paused}
             resume
