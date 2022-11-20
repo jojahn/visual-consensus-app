@@ -8,7 +8,7 @@ export const labels = {
     byNodeType: {
       leader: "A leader primarily has the role of the proposer.",
       follower: "A follower primarily has the role of the acceptor.",
-      node: "A paxos Node follows all three roles of the paxos protocol.",
+      node: "A paxos Node follows the three roles of paxos: learner, proposer and acceptor.",
       proposer: "A proposer tries to have the acceptors agree on a value v send by a client.",
       acceptor: "An acceptor votes on proposals sent from the proposer. Only then a value can be stored",
       learner: "A learner makes sure an accepted value is stored and distributed.",
@@ -18,12 +18,12 @@ export const labels = {
     },
     byMessageMethod: {
       RESPONSE: "Clients may be informed about the outcome of the voting.",
-      REQUEST: "Clients can send requests to the current leader if they want to store an input to the replicated log of the cluster.",
+      REQUEST: "Clients send requests to the current proposer if they want to store an input to the replicated log of the cluster.",
       PREPARE: "A leader node (or proposer) sends followers its generation n. It prepares to commit a value v.",
-      PROMISE: "Followers (or acceptors) answer to the PREPARE requests with a PROMISE message",
-      ACCEPT: "After getting all promises from the acceptor the proposer wants all acceptors to accept a value v",
-      ACCEPTED: "If an acceptor accepts a value v it sends an ACCEPTED message back to the proposer",
-      IGNORED: "If an acceptor does not accept a value v it sends an IGNORED message back to the proposer. The proposer must try again with a higher generation"
+      PROMISE: "Followers (or acceptors) answer to the PREPARE requests with a PROMISE message. They promise to \"only\" accept values from this proposer.",
+      ACCEPT: "After getting all promises from the acceptor the proposer wants all acceptors to accept a value v.",
+      ACCEPTED: "If an acceptor accepts a value v it sends an ACCEPTED message back to the proposer.",
+      IGNORED: "If an acceptor does not accept a value v it sends an IGNORED message back to the proposer. The proposer must try again with a higher generation."
     },
   }
 }

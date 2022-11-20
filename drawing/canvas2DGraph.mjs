@@ -101,6 +101,8 @@ export function canvas2DGraph(
               behavior: "smooth"
             }); */
         }
+      } else if (contentHeight < canvas.height) {
+        canvas.height = canvas.parentElement.clientHeight;
       }
       break;
     }
