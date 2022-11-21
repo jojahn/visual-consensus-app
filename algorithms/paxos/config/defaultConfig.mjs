@@ -8,5 +8,9 @@ export const defaultConfig = {
   numberOfLearners: 2,
   numberOfNodes: 5,
 
-  useSingleNodes: true
+  useSingleNodes: true,
+
+  // ["designated learner" | "contact-all" | "none" ]
+  learnerImpl: "none",
+  electLeader: true
 };

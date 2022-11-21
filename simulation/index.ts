@@ -36,9 +36,9 @@ export default function startSimulation(
           break;
         }
       } else {
-        msgUpdateLoop.push(state, message, () => {
-          if (message.toId) {
-            runners[message.toId].postMessage(message);
+        msgUpdateLoop.push(state, message, (msg) => {
+          if (msg.toId) {
+            runners[msg.toId].postMessage(msg);
           }
         });
       }

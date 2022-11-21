@@ -20,9 +20,11 @@ export default defineConfig({
                 index: "index.html",
                 about: "about.html",
             },
-            /* output: {
-                format: "commonjs"
-            } */
+            output: {
+                entryFileNames: `[name].[hash].mjs`,
+                chunkFileNames: `[name].[hash].mjs`,
+                // format: "commonjs"
+            }
         },
     },
 })

@@ -18,6 +18,14 @@
         // alt: stateStore.update(current => ({ ...current, speed: speed * step }));
     }
 
+    function onKeyDown(e) {
+        if (e.key === " " || e.code === "Space" || e.keyCode === 32) {
+          e.preventDefault();
+          e.stopPropagation();
+          controls && controls.pauseOrPlay();
+        }
+    }
+
     let unsubscribe;
     onMount(() => {
         unsubscribe = stateStore.subscribe(s => {
@@ -28,10 +36,12 @@
             paused = s.paused;
             speed = s.speed / step;
         });
+        document.addEventListener("keydown", onKeyDown);
     });
 
     onDestroy(() => {
         unsubscribe && unsubscribe();
+        document.removeEventListener("keydown", onKeyDown);
     })
 </script>
 
@@ -39,9 +49,9 @@
     <button on:click={controls.reset} type="button">
         reset
     </button>
-    <button on:click={controls.stepBackwards} type="button" disabled={!paused}>
+    <!-- <button on:click={controls.stepBackwards} type="button" disabled={!paused}>
         step backwards
-    </button>
+    </button> -->
     <button on:click={controls.pauseOrPlay} type="button">
         {#if paused}
             resume

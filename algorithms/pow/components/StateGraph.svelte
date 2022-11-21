@@ -1,5 +1,4 @@
 <script>
-  export let configStore;
   export let stateStore;
 </script>
 

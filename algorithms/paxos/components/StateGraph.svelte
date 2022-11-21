@@ -1,18 +1,15 @@
 <script>
-    import {onMount} from "svelte";
-
-    export let configStore;
     export let stateStore;
 </script>
 
 <div style="overflow: auto;">
     <ul class="nodes">
         {#if stateStore}
-            {#each $stateStore.nodes.filter(n => n.type === "node" && n.learner) as node}
+            {#each $stateStore.nodes.filter(n => n.type === "node" && n.log) as node}
                 <li class="log">
                     <h1>{node.id}</h1>
                     <ul class="{$stateStore.selectedElementId === node.id ? 'selected' : ''}">
-                        {#each node.learner.log as entry}
+                        {#each node.log as entry}
                             <li class="entry">{entry}</li>
                         {/each}
                     </ul>

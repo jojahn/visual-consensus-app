@@ -105,8 +105,4 @@
     .property-list.entries {
         list-style-type: disc;
     }
-
-    .property-list.block {
-        padding-left: 20px;
-    }
 </style>

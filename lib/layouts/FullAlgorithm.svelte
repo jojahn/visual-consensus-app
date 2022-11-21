@@ -7,7 +7,6 @@
     import AnimControls from "../controls/AnimControls.svelte";
     import { paintSequenceDiagram } from "../../drawing/paintSequenceDiagram.mjs";
     import { paintNodeGraph } from "../../drawing/paintNodeGraph.mjs";
-    import ElementActions from "../controls/ElementActions.svelte";
     import ElementHoverInfo from "../controls/ElementHoverInfo.svelte";
 
     export let stateStore;

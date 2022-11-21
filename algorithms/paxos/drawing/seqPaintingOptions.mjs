@@ -2,5 +2,19 @@ import { paintingOptions as defaultPaintingOptions } from "../../../drawing/pain
 
 export const seqPaintingOptions = {
   ...defaultPaintingOptions,
-  getText: (msg) => `${msg.method} (${msg.method !== "REQUEST" ? msg.n + ", " : ""}${msg.v})`
+  getText: (msg) => {
+    let result = msg.method;
+    switch(msg.method) {
+    case "REQUEST":
+      result += ` (${msg.v})`;
+      break;
+    case "PROMISE": case "PREPARE": case "IGNORED":
+      result += ` (${msg.n})`;
+      break;
+    case "ACCEPT": case "ACCEPTED":
+      result += ` (${msg.n + ", " + msg.v})`
+      break;
+    }
+    return result;
+  }
 }

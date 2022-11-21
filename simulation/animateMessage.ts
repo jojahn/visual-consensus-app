@@ -15,11 +15,13 @@ export function startMessagesUpdateLoop(updateState, duration) {
             onCompletedMap[key] = undefined;
           }
         });
+        const uniq = (value, index, self) => self.findIndex(m => m.id === value.id) === index;
         return {
           ...current,
           messages: current.messages
             .concat(...missingMessages)
             .map(updateMessage(current, duration, onCompletedMap))
+            .filter(uniq)
         };
       });
     }
@@ -27,7 +29,7 @@ export function startMessagesUpdateLoop(updateState, duration) {
   const interval = setInterval(buildHandler(), MESSAGE_STEP);
   return {
     stop: () => clearInterval(interval),
-    push: async (state, message, onCompleted: () => void): Promise<any> => {
+    push: async (state, message, onCompleted: (msg) => void): Promise<any> => {
       return new Promise(resolve => {
         onCompletedMap[message.id] = {
           resolve,
@@ -51,7 +53,7 @@ function updateMessage(state, duration, onCompletedMap) {
   return msg => {
     // For step-by-step controls allow onCompleted to be called
     if (msg.done && onCompletedMap[msg.id] && !onCompletedMap[msg.id].resolved) {
-      onCompletedMap[msg.id].onCompleted();
+      onCompletedMap[msg.id].onCompleted(msg);
       onCompletedMap[msg.id].resolved = true;
       onCompletedMap[msg.id]?.resolve(msg);
     }
@@ -62,8 +64,14 @@ function updateMessage(state, duration, onCompletedMap) {
 
     const progress = calculateProgress(state, duration, MESSAGE_STEP, msg.progress);
 
-    const startPos = state.nodes.filter(n => n.id === msg.fromId)[0].pos;
-    const endPos = state.nodes.filter(n => n.id === msg.toId)[0].pos;
+    const fromNode = state.nodes.filter(n => n.id === msg.fromId)[0];
+    const toNode = state.nodes.filter(n => n.id === msg.toId)[0];
+    if (!fromNode || !toNode) {
+      alert(`got ${msg.fromId} ${msg.toId}`);
+      return msg;
+    }
+    const startPos = fromNode.pos;
+    const endPos = toNode.pos;
     msg.pos = [
       startPos[0] + Math.min(progress, 1.0) * (endPos[0] - startPos[0]),
       startPos[1] + Math.min(progress, 1.0) * (endPos[1] - startPos[1])
@@ -75,7 +83,7 @@ function updateMessage(state, duration, onCompletedMap) {
       if (!onCompletedMap[msg.id]) {
         console.warn("onCompletedMap missing key");
       } else if (msg.progress < 1.0) {
-        onCompletedMap[msg.id].onCompleted();
+        onCompletedMap[msg.id].onCompleted(msg);
         onCompletedMap[msg.id].resolved = true;
         onCompletedMap[msg.id]?.resolve({
           ...msg,

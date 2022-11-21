@@ -37,6 +37,14 @@
             </label>
         </div>
     {/if}
+    <div class="input-group">
+        <label>Learner Implementation
+            <select bind:value="{$config.learnerImpl}">
+                <option value="none">none</option>
+                <option value="contactAllAcceptors">contact all acceptors</option>
+            </select>
+        </label>
+    </div>
 </div>
 
 

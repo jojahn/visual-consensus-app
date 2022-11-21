@@ -33,7 +33,7 @@ export function buildControls(config: Config, runners: NodeToWorkerMapping, upda
     terminate: terminate(config, runners, stopMessageUpdates)
   };
 
-  const messageControls = (_element) => ({
+  const messageControls = () => ({
     delete: () => updateState(s => ({
       ...s,
       selectedElementId: undefined,
@@ -54,7 +54,7 @@ export function buildControls(config: Config, runners: NodeToWorkerMapping, upda
     simulation: simulationControls,
     element: (element) => ({
       ...nodeControls(element),
-      ...messageControls(element),
+      ...messageControls(),
       createNewAction: (action: customAction) => () => {
         updateState(current => {
           const partial = action(config, current, runners);
@@ -225,17 +225,6 @@ function groupByNewestAndBroadcastKey(sortedDelMessages) {
   }
 }
 
-function getMostRecentMessages(messages: any[], forward: boolean): any[] {
-  const sortedBySent = messages
-    .filter(m => forward || !m.deleted || m.progress >= 0.5)
-    .sort(bySentProp(false));
-  if (sortedBySent.length === 0) {
-    return [];
-  }
-
-  return sortedBySent.reduce(groupByNewestAndBroadcastKey(sortedBySent), []);
-}
-
 function bySentProp(asc = false) {
   return (a: any, b: any) => {
     const aTime = new Date(a.sent).getTime();
@@ -262,39 +251,6 @@ function updateMessagesOnStepForward(mostRecentMsgs: any[], messages) {
       return msg;
     }
   });
-}
-
-function updateMessagesOnStepBackwards(mostRecentMessages, messages) {
-  return messages.map(msg => {
-    if (msg.deleted && mostRecentMessages.indexOf(msg) === -1) {
-      return undefined;
-    }
-
-    if (msg.progress > 0.5) {
-      msg.progress = 0.5;
-      msg.done = false;
-      msg.deleted = false;
-    } else {
-      msg.progress = 0;
-      msg.deleted = true;
-      msg.done = true;
-    }
-    return msg;
-  }).filter(m => m);
-}
-
-function emitStepBackwards(mostRecentMsgs, runners) {
-  mostRecentMsgs
-    .filter(m => m.progress === 0)
-    .map(msg => msg.fromId)
-    .filter(uniq)
-    .forEach(nodeId => {
-      runners[nodeId].postMessage({
-        isFlow: true,
-        type: "STEP",
-        forward: false
-      });
-    });
 }
 
 function terminate(config: Config, runners: NodeToWorkerMapping, stopMessageUpdates: () => void) {

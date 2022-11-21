@@ -73,25 +73,26 @@ export function canvas2DGraph(
   };
 
   let center = [0, 0];
-  let lastWidth = canvas.width;
-  let lastHeight = canvas.height;
+  let contentWidth = 0;
+  let contentHeight = 0;
   let lastChanged = false;
   let stopped = false;
   var times = [];
   if (canvas.width !== canvas.parentElement.clientWidth) {
     canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
   }
   function animate() {
     switch(paintOptions.autoAlign) {
     case "TOP_TO_BOTTOM":
-      if (canvas.height < canvas.parentElement.clientHeight) {
-        canvas.height = Math.max(lastHeight, canvas.parentElement.clientHeight);
-      }
-      if (lastChanged) {
+      /* if (canvas.height < canvas.parentElement.clientHeight) {
+        // canvas.height = Math.max(lastHeight, canvas.parentElement.clientHeight);
+      } */
+      if (contentHeight > canvas.height) {
         lastChanged = false;
-        canvas.height = lastHeight;
+        canvas.height = contentHeight;
         canvas.parentElement.style.overflowY = "scroll";
-        if (!currentLock) {
+        if (currentLock) {
           canvas.parentElement.scrollTo(0, canvas.parentElement.scrollHeight);
           // TODO: Add smooth scrolling
           /* canvas.parentElement.scrollBy({
@@ -100,6 +101,8 @@ export function canvas2DGraph(
               behavior: "smooth"
             }); */
         }
+      } else if (contentHeight < canvas.height) {
+        canvas.height = canvas.parentElement.clientHeight;
       }
       break;
     }
@@ -112,18 +115,18 @@ export function canvas2DGraph(
     let yOffset = panOffset[1];
     switch(paintOptions.autoAlign) {
     case "TOP_TO_BOTTOM":
-      xOffset = panOffset[0] + center[0]/2 - lastWidth/2;
+      xOffset = panOffset[0] + center[0]/2 - contentWidth/2;
       yOffset = 10;
       break;
     case "CENTER":
-      xOffset = panOffset[0] + center[0]/2 - lastWidth/2;
-      yOffset = panOffset[1] + center[1]/2 - lastHeight/2;
+      xOffset = panOffset[0] + center[0]/2 - contentWidth/2;
+      yOffset = panOffset[1] + center[1]/2 - contentHeight/2;
       break;
     }
     context.translate(xOffset, yOffset);
-
-    const [w, h] = paintFn(context, state, mouseCursor, paintOptions);
     center = [canvas.width/2, canvas.height/2];
+
+    [contentWidth, contentHeight] = paintFn(context, state, mouseCursor, paintOptions);
 
     const now = performance.now();
     while (times.length > 0 && times[0] <= now - 1000) {
@@ -135,14 +138,14 @@ export function canvas2DGraph(
     context.translate(-xOffset, -yOffset);
     context.scale(dpr * 1/zoomFactor, dpr * 1/zoomFactor);
 
-    if (w !== lastWidth) {
-      lastWidth = w;
+    /* if (w !== lastWidth) {
+      lastWidth = Math.max(w, canvas.parentElement.clientWidth);
       lastChanged = true;
     }
     if (h !== lastHeight) {
-      lastHeight = h;
+      lastHeight = Math.max(h, canvas.parentElement.clientHeight);
       lastChanged = true;
-    }
+    } */
     /* if (lastChanged) {
       lastChanged = false;
       // canvas.width = w;

@@ -13,6 +13,7 @@ export class Node extends SimulatedNode {
     this.state.chain = [genesisBlock];
     this.state.mempool = [];
     this.getBlocks();
+    this.sync = true;
   }
 
   onmessage(msg) {
@@ -168,7 +169,6 @@ export class Node extends SimulatedNode {
       const duplicate = this.state.chain.find(b => b === msg.block
         || txnsEqual(msg.block, b));
       if (!duplicate) {
-        console.log("--> NO DUPLICATE: chain = ", this.state.chain, ", new block = ", msg.block)
         this.state.mempool = this.state.mempool
           .filter(tx => !msg.block.transactions.find(t => t !== tx));
         this.state.chain.push(msg.block);
