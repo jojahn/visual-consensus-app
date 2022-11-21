@@ -11,7 +11,6 @@
 ---
 
 Visit on [jojahn.github.io/visual-consensus-app](https://jojahn.github.io/visual-consensus-app/)  
-and [dolphin-app-9eiyn.ondigitalocean.app](https://dolphin-app-9eiyn.ondigitalocean.app/)  
 
 ## Project Structure
 
