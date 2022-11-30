@@ -1,4 +1,4 @@
-import { randomId } from "../utils/randomId.mjs";
+import { randomId } from "../config/randomId.mjs";
 
 export class Network {
   neighbors = [];

@@ -1,12 +1,14 @@
 import { decode, encode } from "./configEncoding.mjs";
 
 export function share(config, state) {
-  const c = encode(config);
-  const s = encode(state);
-  const nextURL = "/?config=" + c + "&state=" + s;
-  changeURLWithoutLoading();
+  const [c, _configKeyMap] = encode(config);
+  const [s, _stateKeyMap] = encode(state);
+  const nextURL = "/?c=" + c + "&s=" + s;
+  console.log(nextURL)
+  window.history.replaceState({},
+    "Visual Consensus", nextURL);
+  // changeURLWithoutLoading();
   // TODO: Display flash with 'URL copied to clipboard'
-  navigator.clipboard.writeText(location.origin + nextURL);
 }
 
 function changeURLWithoutLoading(nextURL) {
@@ -15,19 +17,24 @@ function changeURLWithoutLoading(nextURL) {
 
   // This will create a new entry in the browser's history, without reloading
   window.history.pushState(nextState, nextTitle, nextURL);
+  navigator.clipboard.writeText(location.origin + nextURL);
 }
 
 export function decodeConfigAndStateFromURL() {
   let config = null;
   let state = null;
   const searchParams = new URLSearchParams(location.search);
-  if (searchParams.has("config")) {
-    const configString = searchParams.get("config");
+  if (searchParams.has("c")) {
+    const configString = searchParams.get("c");
     config = decode(configString);
   }
-  if (searchParams.has("state")) {
-    const stateString = searchParams.get("state");
+  if (searchParams.has("s")) {
+    const stateString = searchParams.get("s");
     state = decode(stateString);
   }
-  return [config, state];
+  return { config, state };
+}
+
+function buildKeyMaps() {
+  
 }

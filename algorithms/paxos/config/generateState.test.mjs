@@ -1,22 +1,31 @@
-import assert from "assert";
 import { generateState } from "./generateState.mjs";
+import { defaultConfig } from "./defaultConfig.mjs";
 
 describe("generatePaxosState", () => {
-    const state = generateState({
-        numberOfLearners: 1,
-        numberOfAcceptors: 2,
-        numberOfProposers: 3,
-        numberOfClients: 4
-    });
+    const state = generateState(defaultConfig);
 
     it("States always start with an empty messages array", () => {
-        assert.strictEqual(state.messages.length, 0);
+        expect(state.messages.length).toBe(0);
     });
 
-    it("The state must always have the correct amount of nodes", () => {
-        assert.strictEqual(state.nodes.filter(n => n.type === "learner").length, 1);
-        assert.strictEqual(state.nodes.filter(n => n.type === "acceptor").length, 2)
-        assert.strictEqual(state.nodes.filter(n => n.type === "proposer").length, 3);
-        assert.strictEqual(state.nodes.filter(n => n.type === "client").length, 4);
+    it("should generate all nodes", () => {
+        expect(state.nodes.length).toBe(defaultConfig.numberOfNodes + defaultConfig.numberOfClients);
+        state.nodes.forEach(n => {
+            expect(n.running).toBe(true);
+            expect(n.connected).toBe(true);
+        });
+    });
+
+    it("should not create overlapping positions", () => {
+        const minOffset = 10;
+        state.nodes.forEach(n => {
+            state.nodes
+                .filter(other => n.id !== other.id)
+                .forEach(other => {
+                    const xDiff = Math.abs(n.pos[0] - other.pos[0]) > minOffset;
+                    const yDiff = Math.abs(n.pos[1] - other.pos[1]) > minOffset
+                    expect(xDiff || yDiff).toBe(true);
+                });
+        });
     });
 });

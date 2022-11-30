@@ -1,11 +1,15 @@
-import assert from "assert";
+import { Network } from "../../simulation/Network";
 import { Client } from "./Client.mjs";
 
 describe("Client", () => {
     it(" request includes value and proper method", () => {
-        const client = new Client(1);
-        const req = client.createRequest("Hello, World!");
-        assert.strictEqual(req.method, "REQUEST");
-        assert.strictEqual(req.v, "Hello, World!");
+        const net = new Network({id: "C1"}, { id: "N1", type: "node" });
+        const emit = jest.fn();
+        net.emit = emit;
+        const client = new Client("C1", {}, {}, net);
+        client.request("N1", "Hello, World!").do();
+        expect(emit).toHaveBeenCalledWith(
+            expect.objectContaining({ method: "REQUEST", v: "Hello, World!" })
+        );
     });
 });

@@ -1,8 +1,9 @@
 <script>
+import { get } from "svelte/store";
 import Algorithm from "./Algorithm.svelte";
 import Footer from "./Footer.svelte";
 import Header from "./Header.svelte";
-import { share } from "../utils/url.mjs";
+import { share, decodeConfigAndStateFromURL } from "../config/url.mjs";
 import PerformanceGraph from "./components/PerformanceGraph.svelte";
 
 let layout = "full";
@@ -12,7 +13,19 @@ function onShareClicked() {
     if (layout !== "full") {
         return;
     }
-    registeredAlgorithms && registeredAlgorithms[0] && share(registeredAlgorithms[0]);
+    if (!registeredAlgorithms || !registeredAlgorithms[0]) {
+        return;
+    }
+    const configStore = registeredAlgorithms[0].config;
+    const stateStore = registeredAlgorithms[0].state;
+    if (!configStore || !stateStore) {
+        return;
+    }
+    let state = get(stateStore);
+    let config = get(configStore);
+    if (state && config) {
+        share(config, state);
+    }
 }
 function changeAlgorithm(algorithm) {
     if (layout !== "full") {
@@ -26,6 +39,15 @@ function changeAlgorithm(algorithm) {
         }));
 }
 function registerAlgorithm(configStore, stateStore) {
+    if (registeredAlgorithms.length === 0) {
+        const {config, state} = decodeConfigAndStateFromURL();
+        if (config) {
+            configStore.set(config);
+        }
+        if (state) {
+            stateStore.set(state);
+        }
+    }
     registeredAlgorithms.push({ config: configStore, state: stateStore });
 }
 function unregisterAlgorithm(configStore, stateStore) {

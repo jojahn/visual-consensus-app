@@ -1,9 +1,10 @@
-import { SimulatedNode } from "./SimulatedNode.mjs";
+import { SimulatedNode } from "./SimulatedNode";
 
 class TestNode extends SimulatedNode {
+    value = 0;
+
     constructor() {
         super("T0", null, null, { sendTo: () => undefined });
-        this.value = 0;
     }
 
     add() {
@@ -16,6 +17,8 @@ class TestNode extends SimulatedNode {
             }
         }
     }
+
+    onmessage(msg: any) { throw new Error("Method not implemented."); }
 }
 
 describe("SimulatedNode", () => {

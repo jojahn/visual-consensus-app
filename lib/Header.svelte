@@ -23,9 +23,9 @@
             <li>
                 <a href="/about.html">About</a>
             </li>
-            <!-- <li>
+            <li>
                 <button on:click={onShareClicked}>Share</button>
-            </li> -->
+            </li>
         </ul>
     </nav>
 

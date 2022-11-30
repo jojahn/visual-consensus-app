@@ -1,4 +1,3 @@
-import assert from "assert";
 import { Learner } from "./Learner.mjs";
 import {Network} from "../../simulation/Network";
 

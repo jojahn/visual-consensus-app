@@ -44,7 +44,7 @@ export function groupBySentDateAndProperties(threshold, equals:((a: any, b: any)
     const idx = checkGroupsAndItems();
     if (idx !== -1 && prev[idx] && Array.isArray(prev[idx])) {
       prev[idx].push(cur);
-    } else if (idx !== -1 && idx) {
+    } else if (idx !== -1) {
       // create new group
       prev[idx] = [prev[idx], cur];
     } else {

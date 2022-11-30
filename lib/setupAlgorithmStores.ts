@@ -1,4 +1,4 @@
-import { defaultConfig } from "../utils/defaultConfig.mjs";
+import { defaultConfig } from "../config/defaultConfig.mjs";
 import startSimulation, { UpdateableValue } from "../simulation/index";
 import { defaultConfig as defaultPaxosConfig, generateState as generatePaxosState } from "../algorithms/paxos/index.mjs";
 import { writable } from "svelte/store";

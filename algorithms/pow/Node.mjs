@@ -1,6 +1,6 @@
 import { genesisBlock } from "./genesisBlock.mjs";
 import { SimulatedNode } from "../../simulation/SimulatedNode";
-import { hash, verify } from "../../utils/hashing.mjs";
+import { hash, verify } from "../../config/hashing.mjs";
 
 const MAX_MINING = 5000;
 const MIN_MINING = 1000;

@@ -1,4 +1,3 @@
-import assert from "assert";
 import { Proposer } from "./Proposer.mjs";
 import { Network } from "../../simulation/Network";
 

@@ -1,7 +1,6 @@
-import assert from "assert";
 import { Node } from "./Node.mjs";
 import { Network } from "../../simulation/Network";
-import {hash} from "../../utils/hashing.mjs";
+import {hash} from "../../config/hashing.mjs";
 import {genesisBlock} from "./genesisBlock.mjs";
 
 function enrichOnMessage(node) {

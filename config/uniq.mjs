@@ -1,0 +1,1 @@
+export const uniq = (value, index, self) => self.indexOf(value) === index;

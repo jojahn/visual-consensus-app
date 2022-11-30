@@ -1,20 +1,21 @@
-/* const HIDDEN_PROPERTIES = [
-  "executedCommands",
-  "scheduledCommands",
-  "state"
-]; */
+import { randomId } from "../config/randomId.mjs";
+import { Network } from "./Network.js";
 
-import { randomId } from "../utils/randomId.mjs";
+export interface Command {
+  do: () => void;
+  undo: () => void;
+}
 
-export class SimulatedNode {
-  public id;
-  public config;
-  public state;
-  public network;
-  public running;
-  public connected;
-  public executedCommands;
-  public scheduledCommands;
+export abstract class SimulatedNode {
+  public id: string;
+  public config: any;
+  public state: any;
+  public network: Network;
+  public running: boolean;
+  public connected: boolean;
+  public executedCommands: Command[];
+  public scheduledCommands: Command[];
+  public type: string;
   
   constructor(id, config, state, network) {
     this.id = id;
@@ -27,6 +28,8 @@ export class SimulatedNode {
     this.executedCommands = [];
     this.scheduledCommands = [];
   }
+
+  abstract onmessage(msg: any);
 
   stop() {
     this.running = false;
@@ -90,20 +93,11 @@ export class SimulatedNode {
   }
 
   updateState() {
-    // let data = {};
-    /* Object.getOwnPropertyNames(this)
-      .filter(name => HIDDEN_PROPERTIES.indexOf(name) !== -1)
-      .map(name => {
-        data[name] = this[name];
-      });
-    */
     this.network.sendTo(undefined, {
       type: "STATE_CHANGED",
       isFlow: true,
       data: {
-        ...this.state,
-        scheduledCommands: this.scheduledCommands.map(({ id }) => ({ id })),
-        executedCommands: this.executedCommands.map(({ id }) => ({ id }))
+        ...this.state
       }
     });
   }

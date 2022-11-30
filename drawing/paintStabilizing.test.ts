@@ -18,7 +18,7 @@ describe("paintStabilizing", () => {
   });
 
   describe("groupBySentDateAndProperties", () => {
-    it("should create groups of messages by sent date and type", () => {
+    it("should create groups of messages by sent date and custom function", () => {
       const start = new Date();
       let messages = [
         { id: "A", sent: start.toISOString(), type: "TypeA" },
@@ -26,22 +26,8 @@ describe("paintStabilizing", () => {
         { id: "C1", sent: new Date(start.getTime() + 1000).toISOString(), type: "TypeC" },
         { id: "C2", sent: new Date(start.getTime() + 1099).toISOString(), type: "TypeC" }
       ];
-      const grouped = messages.reduce(groupBySentDateAndProperties(100, [["type"]]), []);
-      expect(grouped[0].id).toBe("A");
-      expect(grouped[1].id).toBe("B");
-      expect(grouped[2][0].id).toBe("C1");
-      expect(grouped[2][1].id).toBe("C2");
-    });
-
-    it("should create groups of messages by function prop", () => {
-      const start = new Date();
-      let messages = [
-        { id: "A", sent: start.toISOString(), type: "TypeA" },
-        { id: "B", sent: start.toISOString(), type: "TypeB" },
-        { id: "C1", sent: new Date(start.getTime() + 1000).toISOString(), type: "TypeC" },
-        { id: "C2", sent: new Date(start.getTime() + 1099).toISOString(), type: "TypeC" }
-      ];
-      const grouped = messages.reduce(groupBySentDateAndProperties(100, [[(m) => m.type]]), []);
+      const equals = (a, b) => a.type === b.type; 
+      const grouped = messages.reduce(groupBySentDateAndProperties(100, equals), []);
       expect(grouped[0].id).toBe("A");
       expect(grouped[1].id).toBe("B");
       expect(grouped[2][0].id).toBe("C1");
@@ -56,27 +42,16 @@ describe("paintStabilizing", () => {
         { id: "C1", sent: start.toISOString(), type: "world" },
         { id: "C2", sent: start.toISOString(), type: "hello" }
       ];
-      const grouped = messages.reduce(groupBySentDateAndProperties(100, [["type"], [(m) => m.id[0]]]), []);
-      console.log(grouped)
+      const equals = (a, b) => {
+        const typeEquals = a.type === b.type;
+        const idSimilar = a.id[0] === b.id[0];
+        return (typeEquals && !idSimilar) || (!typeEquals && idSimilar);
+      };
+      const grouped = messages.reduce(groupBySentDateAndProperties(100, equals), []);
       expect(grouped[0][0].id).toBe("A");
-      expect(grouped[0][1].id).toBe("C1");
+      expect(grouped[0][1].id).toBe("C2");
       expect(grouped[1][0].id).toBe("B");
-      expect(grouped[1][1].id).toBe("C2");
-    });
-
-    it("should be chainable", () => {
-      const start = new Date();
-      let messages = [
-        { id: "A", sent: start.toISOString(), type: "TypeA" },
-        { id: "B", sent: start.toISOString(), type: "TypeB" },
-        { id: "C1", sent: new Date(start.getTime() + 1000).toISOString(), type: "TypeC" },
-        { id: "C2", sent: new Date(start.getTime() + 1099).toISOString(), type: "TypeC" }
-      ];
-      const grouped = messages.reduce(groupBySentDateAndProperties(100, [[(m) => m.type]]), []);
-      expect(grouped[0].id).toBe("A");
-      expect(grouped[1].id).toBe("B");
-      expect(grouped[2][0].id).toBe("C1");
-      expect(grouped[2][1].id).toBe("C2");
+      expect(grouped[1][1].id).toBe("C1");
     });
   });
 });

@@ -1,6 +1,6 @@
 {
     "name": "visual-consensus",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "entry": "index.mjs",
     "module": "esnext",
     "private": true,

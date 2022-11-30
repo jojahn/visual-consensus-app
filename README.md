@@ -1,6 +1,6 @@
 # Visual Consensus  
 
-[![version:1.0.5](https://img.shields.io/badge/version-1.0.5-purple.svg)](https://github.com/jojahn/visual-consensus-app/releases) [![license=MIT](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE) [![build=unknown](https://img.shields.io/badge/build-unknown-lightgray.svg)](#)
+[![version:1.0.6](https://img.shields.io/badge/version-1.0.5-purple.svg)](https://github.com/jojahn/visual-consensus-app/releases) [![license=MIT](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE) [![build=unknown](https://img.shields.io/badge/build-unknown-lightgray.svg)](#)
 
 
 > visualization of consensus algorithmus in distributed systems  
@@ -10,8 +10,7 @@
 
 ---
 
-Visit on [jojahn.github.io/visual-consensus-app](https://jojahn.github.io/visual-consensus-app/)  
-and [dolphin-app-9eiyn.ondigitalocean.app](https://dolphin-app-9eiyn.ondigitalocean.app/)  
+Visit on [jojahn.github.io/visual-consensus-app](https://jojahn.github.io/visual-consensus-app/)
 
 ## Project Structure
 

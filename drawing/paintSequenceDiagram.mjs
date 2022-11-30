@@ -1,8 +1,8 @@
 import {
   sortMessageBySentDate,
   groupBySentDateAndProperties
-} from "./paintStabilizing.ts"
-import { COLORS } from "./colors.ts";
+} from "./paintStabilizing"
+import { COLORS } from "./colors";
 
 export const paintingOptions = {
   linePadding: 50,
@@ -37,14 +37,7 @@ export function paintSequenceDiagram(context, state, mouseCursor, options = pain
     options.internal.furthestLineX = options.internal.nodeToXMap[n.id];
   });
 
-  const groupByTextOrBroadcastKey = (a, b) => {
-    /* const textEquals = options.getText(a) === options.getText(b);
-    if (textEquals) {
-      return true;
-    }
-    if (a.broadcastKey !== undefined && b.broadcastKey !== undefined) {
-      return a.broadcastKey === b.broadcastKey;
-    } */
+  const groupByText = (a, b) => {
     return options.getText(a) === options.getText(b);
   }
 
@@ -53,7 +46,7 @@ export function paintSequenceDiagram(context, state, mouseCursor, options = pain
   options.internal.maxWidth = options.internal.furthestLineX;
   state.messages
     .sort(sortMessageBySentDate)
-    .reduce(groupBySentDateAndProperties(1000, groupByTextOrBroadcastKey), [])
+    .reduce(groupBySentDateAndProperties(1000, groupByText), [])
     .forEach(
       paintMessage(
         context,

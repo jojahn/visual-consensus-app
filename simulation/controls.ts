@@ -1,7 +1,7 @@
 import { NodeRunner } from "./NodeRunner";
 
 export interface NodeToWorkerMapping {
-  [key: string]: Worker | NodeRunner;
+  [key: string]: Worker | NodeRunner<any>;
 }
 
 type State = any;

@@ -1,9 +1,10 @@
 import { Network } from "./Network";
-import { randomId } from "../utils/randomId.mjs";
+import { randomId } from "../config/randomId.mjs";
 import { SimulatedNode } from "./SimulatedNode";
 import { setupNode } from "../algorithms/setupNode.mjs";
+import { ClientRequestor } from "./ClientRequestor";
 
-export class NodeRunner {
+export class NodeRunner<T extends SimulatedNode & Partial<ClientRequestor>> {
   private stopListening: () => void;
   private messageEventHandler: (event: any) => void;
 
@@ -11,7 +12,7 @@ export class NodeRunner {
   private config: any;
   private network: Network;
   private nodeStates: any[];
-  private nodes: SimulatedNode[];
+  private nodes: T[];
 
   constructor(config, nodeStates) {
     this.id = randomId();
@@ -69,7 +70,7 @@ export class NodeRunner {
         const node = this.nodes.find(n => n.id === nodeId);
         if (node && node.type === "client") {
           const { v } = msg;
-          node.requestRandom(v);
+          (node as ClientRequestor).requestRandom(v);
         }
       }
       break;
