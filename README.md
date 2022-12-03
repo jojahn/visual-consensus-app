@@ -1,6 +1,6 @@
 # Visual Consensus  
 
-[![version:1.0.6](https://img.shields.io/badge/version-1.0.5-purple.svg)](https://github.com/jojahn/visual-consensus-app/releases) [![license=MIT](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE) [![build=unknown](https://img.shields.io/badge/build-unknown-lightgray.svg)](#)
+[![version:1.0.6](https://img.shields.io/badge/version-1.0.5-purple.svg)](https://github.com/jojahn/visual-consensus-app/releases) [![license=MIT](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE) [![](https://github.com/jojahn/visual-consensus-app/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/jojahn/visual-consensus-app/deployments/activity_log?environment=github-pages)
 
 
 > visualization of consensus algorithmus in distributed systems  
